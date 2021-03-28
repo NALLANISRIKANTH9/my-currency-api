@@ -1,0 +1,79 @@
+buildscript {
+	ext {
+		springBootVersion = '2.1.3.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE")
+		//classpath "com.diffplug.spotless:spotless-plugin-gradle:3.28.0"
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.2.6.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+//apply plugin: "com.diffplug.gradle.spotless"
+apply plugin: "jacoco"
+
+group = 'com.nallani'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+configurations {
+	providedRuntime
+}
+
+configurations.all {
+	exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+	exclude group: 'org.springframework.boot', module: 'logback-classic'
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.10.3'
+	compile group: 'org.projectlombok', name: 'lombok', version:'1.16.18'
+	compile group: 'commons-io', name: 'commons-io', version:'2.5'
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version:'2.0.3.RELEASE'
+	compile group: 'org.apache.commons', name: 'commons-pool2', version:'2.0'
+	compile group: 'redis.clients', name: 'jedis', version:'2.9.0'
+	compile group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: '2.0.1.RELEASE'
+
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+	}
+}
+
+bootRun {
+	systemProperties System.properties
+}
+test {
+	systemProperties System.properties
+}
+
+
+/*
+spotless {
+	java {
+		googleJavaFormat('1.5')
+	}
+
+}*/
